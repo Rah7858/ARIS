@@ -1,5 +1,4 @@
-// ARIS WebSocket service
-const WS_URL = "ws://localhost:5000/ws";
+const WS_URL = (import.meta.env?.VITE_WS_URL) || "ws://localhost:5000/ws";
 
 type EventHandler = (data: unknown) => void;
 
