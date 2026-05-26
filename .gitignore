@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files - NEVER commit these
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+**/.env
+**/.env.local
+**/.env.*
+!**/.env.example
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Lovable cache (remove all traces)
+.lovable/
+*.lovable
