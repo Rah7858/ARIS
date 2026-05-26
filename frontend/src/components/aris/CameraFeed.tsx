@@ -28,13 +28,25 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
 
   return (
     <div className="relative aspect-video rounded-sm overflow-hidden border border-border bg-black scanline group">
-      {/* Simulated video — animated gradient + grid */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: `radial-gradient(circle at 30% 40%, ${hue} 0%, #02040a 70%), linear-gradient(180deg, #050810 0%, #0a1424 100%)`,
-        }}
-      />
+      {/* Looping video when online, fallback to radial gradient when offline */}
+      {online ? (
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
+        >
+          <source src="https://www.pexels.com/download/video/3045163/" type="video/mp4"/>
+        </video>
+      ) : (
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(circle at 30% 40%, ${hue} 0%, #02040a 70%), linear-gradient(180deg, #050810 0%, #0a1424 100%)`,
+          }}
+        />
+      )}
       <div
         className="absolute inset-0 opacity-40"
         style={{
