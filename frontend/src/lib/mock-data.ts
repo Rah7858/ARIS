@@ -55,11 +55,12 @@ export interface AlertRecord {
 }
 
 export const cameras: Camera[] = [
-  { id: "CAM-001", name: "Western Express Hwy", city: "Mumbai",    location: "Bandra Junction",     lat: 19.0596, lng: 72.8295, status: "ONLINE",      resolution: "4K",    uptime: "99.8%", streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-  { id: "CAM-002", name: "Ring Road North",     city: "Delhi",     location: "Connaught Place",     lat: 28.6315, lng: 77.2167, status: "ONLINE",      resolution: "4K",    uptime: "99.2%", streamUrl: "https://stream.mux.com/v69RSHhFelSm4701snP22dYz2jICy4E4FUyk02rW4gxRM.m3u8" },
-  { id: "CAM-003", name: "Outer Ring Road",     city: "Bangalore", location: "Marathahalli Bridge", lat: 12.9591, lng: 77.6974, status: "ONLINE",      resolution: "1080p", uptime: "98.5%", streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" },
-  { id: "CAM-004", name: "OMR Corridor",        city: "Chennai",   location: "Sholinganallur",      lat: 12.9010, lng: 80.2279, status: "ONLINE",      resolution: "4K",    uptime: "97.1%", streamUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" },
-  { id: "CAM-005", name: "Mumbai-Pune Expy",    city: "Pune",      location: "Lonavla Exit",        lat: 18.7546, lng: 73.4062, status: "MAINTENANCE", resolution: "4K",    uptime: "95.3%" },
+  { id: "CAM-001", name: "Western Express Hwy", city: "Mumbai",    location: "Bandra Junction",     lat: 19.0596, lng: 72.8295, status: "ONLINE",      resolution: "4K",    uptime: "99.8%", streamUrl: "https://cdn.pixabay.com/video/2020/07/30/46114-446449784_large.mp4" },
+  { id: "CAM-002", name: "Ring Road North",     city: "Delhi",     location: "Connaught Place",     lat: 28.6315, lng: 77.2167, status: "ONLINE",      resolution: "4K",    uptime: "99.2%", streamUrl: "https://cdn.pixabay.com/video/2019/09/19/27089-361244982_large.mp4" },
+  { id: "CAM-003", name: "Outer Ring Road",     city: "Bangalore", location: "Marathahalli Bridge", lat: 12.9591, lng: 77.6974, status: "ONLINE",      resolution: "1080p", uptime: "98.5%", streamUrl: "https://cdn.pixabay.com/video/2016/09/20/5312-183565596_large.mp4" },
+  { id: "CAM-004", name: "ECR Highway",         city: "Chennai",   location: "Sholinganallur",      lat: 12.9010, lng: 80.2279, status: "ONLINE",      resolution: "4K",    uptime: "97.1%", streamUrl: "https://cdn.pixabay.com/video/2020/04/09/35547-407902098_large.mp4" },
+  { id: "CAM-005", name: "Mumbai Expressway",    city: "Pune",      location: "Lonavla Exit",        lat: 18.7546, lng: 73.4062, status: "ONLINE",      resolution: "4K",    uptime: "95.3%", streamUrl: "https://cdn.pixabay.com/video/2020/05/11/38895-420700113_large.mp4" },
+  { id: "CAM-006", name: "OUTER Ring Road",     city: "Hyderabad", location: "Gachibowli",          lat: 17.3850, lng: 78.4867, status: "ONLINE",      resolution: "4K",    uptime: "98.9%", streamUrl: "https://cdn.pixabay.com/video/2019/04/12/22765-329672910_large.mp4" },
 ];
 
 

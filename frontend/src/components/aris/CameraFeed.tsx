@@ -7,9 +7,10 @@ interface Props {
   location: string;
   online?: boolean;
   hue?: string;
+  streamUrl?: string;
 }
 
-export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a" }: Props) {
+export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a", streamUrl }: Props) {
   const particles = useMemo(() => Array.from({ length: 14 }).map((_, i) => ({
     left: (i * 17) % 100,
     top: (i * 29) % 100,
@@ -35,18 +36,22 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
           muted 
           loop 
           playsInline
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          style={{ zIndex: 0 }}
         >
-          <source src="https://www.pexels.com/download/video/3045163/" type="video/mp4"/>
+          <source src={streamUrl || "https://cdn.pixabay.com/video/2020/07/30/46114-446449784_large.mp4"} type="video/mp4"/>
         </video>
       ) : (
         <div
           className="absolute inset-0"
           style={{
             background: `radial-gradient(circle at 30% 40%, ${hue} 0%, #02040a 70%), linear-gradient(180deg, #050810 0%, #0a1424 100%)`,
+            zIndex: 0
           }}
         />
       )}
+      
+      {/* Scanline / Grid overlay */}
       <div
         className="absolute inset-0 opacity-40"
         style={{
@@ -54,19 +59,20 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
             "linear-gradient(rgba(0,229,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.08) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
           animation: "scanline 8s linear infinite",
+          zIndex: 5
         }}
       />
 
       {/* Fake road / vehicles */}
-      <div className="absolute bottom-1/3 left-0 right-0 h-px bg-cyan/40" />
-      <div className="absolute top-1/3 left-0 right-0 h-px bg-cyan/20" />
+      <div className="absolute bottom-1/3 left-0 right-0 h-px bg-cyan/40" style={{ zIndex: 5 }} />
+      <div className="absolute top-1/3 left-0 right-0 h-px bg-cyan/20" style={{ zIndex: 5 }} />
       <div
         className="absolute bottom-[35%] left-1/4 w-3 h-2 bg-warning/80 rounded-sm shadow-[0_0_8px_var(--warning)]"
-        style={{ animation: "scanline 6s linear infinite" }}
+        style={{ animation: "scanline 6s linear infinite", zIndex: 5 }}
       />
       <div
         className="absolute bottom-[42%] right-1/3 w-2 h-1.5 bg-cyan/60 rounded-sm"
-        style={{ animation: "scanline 9s linear infinite reverse" }}
+        style={{ animation: "scanline 9s linear infinite reverse", zIndex: 5 }}
       />
 
       {/* Drifting AI tracking particles */}
@@ -75,11 +81,15 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
           left: `${p.left}%`, top: `${p.top}%`,
           ["--dx" as any]: `${p.dx}px`, ["--dy" as any]: `${p.dy}px`,
           ["--dur" as any]: `${p.dur}s`, animationDelay: `${p.delay}s`,
+          zIndex: 5
         }} />
       ))}
 
       {/* HUD overlay */}
-      <div className="absolute inset-0 p-2.5 flex flex-col justify-between text-[10px] font-mono-tech text-cyan/90">
+      <div 
+        className="absolute inset-0 p-2.5 flex flex-col justify-between text-[10px] font-mono-tech text-cyan/90"
+        style={{ zIndex: 10 }}
+      >
         <div className="flex items-start justify-between">
           <div className="space-y-0.5">
             <div className="flex items-center gap-1.5">
@@ -111,10 +121,10 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
       </div>
 
       {/* Corner brackets */}
-      <span className="absolute top-1 left-1 w-3 h-3 border-t-2 border-l-2 border-cyan" />
-      <span className="absolute top-1 right-1 w-3 h-3 border-t-2 border-r-2 border-cyan" />
-      <span className="absolute bottom-1 left-1 w-3 h-3 border-b-2 border-l-2 border-cyan" />
-      <span className="absolute bottom-1 right-1 w-3 h-3 border-b-2 border-r-2 border-cyan" />
+      <span className="absolute top-1 left-1 w-3 h-3 border-t-2 border-l-2 border-cyan" style={{ zIndex: 10 }} />
+      <span className="absolute top-1 right-1 w-3 h-3 border-t-2 border-r-2 border-cyan" style={{ zIndex: 10 }} />
+      <span className="absolute bottom-1 left-1 w-3 h-3 border-b-2 border-l-2 border-cyan" style={{ zIndex: 10 }} />
+      <span className="absolute bottom-1 right-1 w-3 h-3 border-b-2 border-r-2 border-cyan" style={{ zIndex: 10 }} />
     </div>
   );
 }

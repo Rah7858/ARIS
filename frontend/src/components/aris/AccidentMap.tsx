@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 interface Marker { lat: number; lng: number; severity?: string; label?: string }
 
-export function AccidentMap({ markers, height = 380, center = [21.5, 78] }: { markers: Marker[]; height?: number; center?: [number, number] }) {
+export function AccidentMap({ markers, height = 400, center = [21.5, 78] }: { markers: Marker[]; height?: number; center?: [number, number] }) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
 

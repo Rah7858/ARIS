@@ -10,7 +10,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const [user, setUser] = useState("admin@aris.com");
+  const [user, setUser] = useState("admin");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ function LoginPage() {
         toast("AUTHENTICATED · Access granted", "success");
         nav({ to: "/dashboard" });
       } else {
-        const msg = "Invalid credentials. Use admin@aris.com / Admin@1234";
+        const msg = "Invalid credentials. Use admin / aris2026";
         setError(msg);
         toast(msg, "error");
         setLoading(false);
@@ -97,8 +97,8 @@ function LoginPage() {
 
           <div className="mt-5 pt-5 border-t border-border text-[10px] font-mono-tech text-muted-foreground space-y-1">
             <div className="text-cyan/70 mb-1">// DEMO CREDENTIALS</div>
-            <div className="flex justify-between"><span>EMAIL</span><span className="text-foreground">admin@aris.com</span></div>
-            <div className="flex justify-between"><span>PASS</span><span className="text-foreground">Admin@1234</span></div>
+            <div className="flex justify-between"><span>OPERATOR ID</span><span className="text-foreground">admin</span></div>
+            <div className="flex justify-between"><span>ACCESS KEY</span><span className="text-foreground">aris2026</span></div>
           </div>
         </div>
         <div className="mt-3 text-center text-[10px] font-mono-tech text-muted-foreground">

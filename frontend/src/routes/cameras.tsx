@@ -20,11 +20,12 @@ function normalizeCam(c: any): Camera {
     name: c.name || c.id,
     city: c.city || "Unknown",
     location: c.location || c.camera_location || "—",
-    status: c.status === "active" ? "ONLINE" : c.status === "maintenance" ? "MAINTENANCE" : "OFFLINE",
+    status: c.status === "active" || c.status === "ONLINE" || c.status === "online" ? "ONLINE" : c.status === "maintenance" ? "MAINTENANCE" : "OFFLINE",
     resolution: "4K",
     uptime: "99%",
     lat: parseFloat(c.latitude) || 20,
     lng: parseFloat(c.longitude) || 78,
+    streamUrl: c.streamUrl || c.stream_url,
   };
 }
 
@@ -135,7 +136,7 @@ function CamerasPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {cams.map((c, i) => (
             <div key={c.id} className="glass p-3">
-              <CameraFeed name={c.name || c.id} city={c.city} location={c.location} online={c.status === "ONLINE"} hue={["#0f1a2a","#1a0f1a","#0f1a1a","#1a1a0f","#1a0f24"][i % 5]} />
+              <CameraFeed name={c.name || c.id} city={c.city} location={c.location} online={c.status === "ONLINE"} streamUrl={c.streamUrl} hue={["#0f1a2a","#1a0f1a","#0f1a1a","#1a1a0f","#1a0f24"][i % 5]} />
               <div className="mt-3 flex items-start justify-between">
                 <div>
                   <div className="font-display tracking-wider text-sm text-foreground">{c.name}</div>

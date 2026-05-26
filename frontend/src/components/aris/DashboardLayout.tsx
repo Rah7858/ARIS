@@ -28,6 +28,13 @@ export function DashboardLayout({ children, alertCount = 3 }: { children: React.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const now = useClock();
   const nav = useNavigate();
+  const [isDemo, setIsDemo] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsDemo(localStorage.getItem("aris_is_demo") === "true");
+    }
+  }, []);
 
   return (
     <AuthGuard>
@@ -51,6 +58,13 @@ export function DashboardLayout({ children, alertCount = 3 }: { children: React.
             <span className="w-1.5 h-1.5 rounded-full bg-success pulse-cyan" />
             <span className="text-[10px] font-display tracking-[0.2em] text-success">SYSTEM ACTIVE</span>
           </div>
+
+          {isDemo && (
+            <div className="flex items-center gap-2 px-3 py-1 rounded-sm border border-warning/45 bg-warning/5 animate-pulse">
+              <span className="w-1.5 h-1.5 rounded-full bg-warning" />
+              <span className="text-[10px] font-display tracking-[0.2em] text-warning">DEMO MODE</span>
+            </div>
+          )}
 
           <div className="flex-1" />
 

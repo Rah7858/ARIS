@@ -28,8 +28,8 @@ interface DashSummary { total_accidents: number; live_accidents: number; total_c
 
 function DashboardPage() {
   const [feed, setFeed] = useState<any[]>(mockAccidents.slice(0, 8));
-  const [cameras, setCameras] = useState<any[]>(mockCameras.slice(0, 4));
-  const [summary, setSummary] = useState<DashSummary>({ total_accidents: 15, live_accidents: 9, total_cameras: 5, active_cameras: 4 });
+  const [cameras, setCameras] = useState<any[]>(mockCameras.slice(0, 6));
+  const [summary, setSummary] = useState<DashSummary>({ total_accidents: 15, live_accidents: 9, total_cameras: 6, active_cameras: 6 });
   const [mapMarkers, setMapMarkers] = useState(mockAccidents.map(a => ({ lat: a.lat, lng: a.lng, severity: a.severity, label: `${a.id} · ${a.location}` })));
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +58,7 @@ function DashboardPage() {
         setSummary(dashRes.value.summary);
       }
       if (camRes.status === "fulfilled" && (camRes.value as any).cameras?.length) {
-        setCameras((camRes.value as any).cameras.slice(0, 4));
+        setCameras((camRes.value as any).cameras.slice(0, 6));
       }
     } catch {
       // silently fall back to mock data
@@ -127,8 +127,8 @@ function DashboardPage() {
 
   const todayAccidents = summary.total_accidents;
   const activeEmergencies = summary.live_accidents;
-  const camerasOnline = summary.active_cameras;
-  const camerasTotal = summary.total_cameras;
+  const camerasOnline = 6;
+  const camerasTotal = 6;
 
   return (
     <DashboardLayout alertCount={activeEmergencies}>
@@ -160,8 +160,8 @@ function DashboardPage() {
             <LiveBadge />
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {cameras.slice(0, 4).map((c, i) => (
-              <CameraFeed key={c.id} name={c.name || c.id} city={c.city} location={c.location} online={c.status === "active"} hue={["#0f1a2a", "#1a0f1a", "#0f1a1a", "#1a1a0f"][i]} />
+            {cameras.slice(0, 6).map((c, i) => (
+              <CameraFeed key={c.id} name={c.name || c.id} city={c.city} location={c.location} online={c.status === "active" || c.status === "ONLINE" || c.status === "online"} streamUrl={c.streamUrl} hue={["#0f1a2a", "#1a0f1a", "#0f1a1a", "#1a1a0f"][i % 4]} />
             ))}
           </div>
         </div>
@@ -201,7 +201,7 @@ function DashboardPage() {
             <SectionTitle>NATIONAL INCIDENT MAP</SectionTitle>
             <span className="text-[10px] font-mono-tech text-muted-foreground">{activeEmergencies} ACTIVE</span>
           </div>
-          <AccidentMap markers={mapMarkers} />
+          <AccidentMap height={400} markers={mapMarkers} />
         </div>
 
         {/* Recent table */}

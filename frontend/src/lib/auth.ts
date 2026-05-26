@@ -31,22 +31,39 @@ export function isAuthed(): boolean {
   return !!getToken();
 }
 
-/** Call real backend; returns true on success */
 export async function login(emailOrUser: string, password: string): Promise<boolean> {
   try {
-    // Accept either email or the demo username "admin"
     const email = emailOrUser.includes("@") ? emailOrUser : `${emailOrUser}@aris.com`;
-    const res = await api.post<{ success: boolean; data: { token: string; user: AuthUser } }>(
+    const res = await api.post<any>(
       "/auth/login",
       { email, password }
     );
-    if (res.data.success) {
-      localStorage.setItem(TOKEN_KEY, res.data.data.token);
-      localStorage.setItem(USER_KEY, JSON.stringify(res.data.data.user));
+    const token = res.data?.data?.token || res.data?.token;
+    const user = res.data?.data?.user || res.data?.user;
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      localStorage.setItem("aris_is_demo", "false");
       return true;
     }
     return false;
   } catch {
+    // If API fails or rejects credentials, check fallback for admin/aris2026
+    if (
+      (emailOrUser === "admin" || emailOrUser === "admin@aris.com") &&
+      password === "aris2026"
+    ) {
+      const demoUser: AuthUser = {
+        id: "demo-user",
+        name: "Demo Operator",
+        email: "admin@aris.com",
+        role: "admin",
+      };
+      localStorage.setItem(TOKEN_KEY, "demo-token-12345");
+      localStorage.setItem(USER_KEY, JSON.stringify(demoUser));
+      localStorage.setItem("aris_is_demo", "true");
+      return true;
+    }
     return false;
   }
 }

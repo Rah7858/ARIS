@@ -1,7 +1,13 @@
-// ARIS API Client — axios instance with auth interceptors
 import axios from "axios";
 
-const BASE_URL = (import.meta.env?.VITE_API_URL) || "/api/v1";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+// Smart resolve of base API route to handle backend versioning
+const BASE_URL = API_URL.includes("/api/v1") 
+  ? API_URL 
+  : API_URL.endsWith("/api") 
+    ? `${API_URL}/v1` 
+    : `${API_URL}/api/v1`;
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -9,36 +15,35 @@ export const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-// ── Request interceptor: attach JWT ──────────────────────────────────────────
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("aris_token");
-      if (token) config.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// ── Response interceptor: handle 401 → redirect to login ─────────────────────
+api.interceptors.use = api.interceptors.request.use; // fallback compatibility
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
-        localStorage.removeItem("aris_token");
-        localStorage.removeItem("aris_user");
+        localStorage.clear();
         window.location.href = "/login";
       }
     }
-    const msg = error.response?.data?.message || error.message || "API error";
-    console.error(`[ARIS API] ${error.config?.method?.toUpperCase()} ${error.config?.url} → ${msg}`);
     return Promise.reject(error);
   }
 );
 
-// ── Convenience helpers ───────────────────────────────────────────────────────
+// ── Convenience helpers to prevent breaking other components ─────────────────
 export const apiGet = <T>(url: string, params?: object) =>
   api.get<{ success: boolean; data: T }>(url, { params }).then((r) => r.data.data);
 
@@ -53,3 +58,5 @@ export const apiPatch = <T>(url: string, body?: object) =>
 
 export const apiDelete = (url: string) =>
   api.delete<{ success: boolean }>(url).then((r) => r.data);
+
+export default api;
