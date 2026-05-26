@@ -3,11 +3,26 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 
+// Support both DATABASE_URL (preferred) and individual DB_* variables
+const poolConfig = process.env.DATABASE_URL
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    }
+  : {
+      host:     process.env.DB_HOST,
+      port:     parseInt(process.env.DB_PORT || '5432', 10),
+      database: process.env.DB_NAME,
+      user:     process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      ssl:      { rejectUnauthorized: false },
+    };
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  ...poolConfig,
+  max:                    20,
+  idleTimeoutMillis:      30000,
+  connectionTimeoutMillis: 5000,
 });
 
 pool.on('error', (err) => {
