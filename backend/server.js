@@ -26,8 +26,14 @@ const healthInterval = setInterval(() => {
   });
 }, parseInt(process.env.WS_HEALTH_INTERVAL_MS || '30000', 10));
 
-// ─── Start server ─────────────────────────────────────────────────────────────
-async function start() {
+// ─── Start server (with DB retry logic) ──────────────────────────────────────
+async function start(retries = 5) {
+  // Log environment variable presence (never log actual values)
+  console.log('[CONFIG] DB_HOST:      ', process.env.DB_HOST       ? 'SET' : 'NOT SET');
+  console.log('[CONFIG] DB_PASSWORD:  ', process.env.DB_PASSWORD   ? 'SET' : 'NOT SET');
+  console.log('[CONFIG] DATABASE_URL: ', process.env.DATABASE_URL  ? 'SET' : 'NOT SET');
+  console.log('[CONFIG] JWT_SECRET:   ', process.env.JWT_SECRET     ? 'SET' : 'NOT SET');
+
   try {
     // Test DB connection before binding
     await pool.query('SELECT 1');
@@ -45,9 +51,19 @@ async function start() {
       console.log('╚══════════════════════════════════════════════════╝');
       console.log('');
     });
-  } catch (err) {
-    console.error('[FATAL] Failed to start server:', err.message);
-    process.exit(1);
+  } catch (error) {
+    console.error('[FATAL] Failed to start server:', error);
+    console.error('[FATAL] Error details:', error.message);
+    console.error('[FATAL] Stack:', error.stack);
+    console.error(`[FATAL] DB connection failed. Retries left: ${retries}`);
+
+    if (retries > 0) {
+      console.log(`[RETRY] Retrying in 5 seconds... (${retries} attempts remaining)`);
+      setTimeout(() => start(retries - 1), 5000);
+    } else {
+      console.error('[FATAL] All retries exhausted. Exiting.');
+      process.exit(1);
+    }
   }
 }
 

@@ -11,7 +11,8 @@ const pool = new Pool({
 });
 
 pool.on('error', (err) => {
-  console.error('[DB] Unexpected pool error:', err);
+  console.error('[DB] Unexpected pool error:', err.message);
+  console.error('[DB] Pool error stack:', err.stack);
 });
 
 /**
