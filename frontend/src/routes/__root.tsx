@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, createRootRouteWithContext, useRouter, HeadContent, Scripts } from "@tanstack/react-router";
-import appCss from "../styles.css?url";
+import { Outlet, createRootRouteWithContext, useRouter } from "@tanstack/react-router";
 import { Toaster } from "@/components/aris/Toaster";
 import { AlertBanner } from "@/components/aris/AlertBanner";
 import { BootScreen } from "@/components/aris/BootScreen";
@@ -20,32 +19,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ARIS | Accident Response Intelligence System" },
-      { name: "description", content: "Real-time accident detection and emergency response coordination." },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFound,
   errorComponent: ErrorComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head><HeadContent /></head>
-      <body>{children}<Scripts /></body>
-    </html>
-  );
-}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
