@@ -1,8 +1,9 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Activity, AlertTriangle, BarChart3, Bell, Camera, Cog, LayoutDashboard, LogOut, Menu, Phone, ShieldAlert } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Camera, Cog, LayoutDashboard, LogOut, Menu, Phone, ShieldAlert } from "lucide-react";
 import { logout } from "@/lib/auth";
 import { AuthGuard } from "./AuthGuard";
+import { NotificationBell } from "./NotificationBell";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutDashboard, label: "Command Center", key: "G+D" },
@@ -74,14 +75,7 @@ export function DashboardLayout({ children, alertCount = 3 }: { children: React.
             <span className="text-[10px] text-muted-foreground font-mono-tech ml-1">IST</span>
           </div>
 
-          <button className="relative h-9 w-9 grid place-items-center rounded-sm border border-border hover:border-danger/50 transition">
-            <Bell className="w-4 h-4 text-muted-foreground" />
-            {alertCount > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 grid place-items-center rounded-full bg-danger text-[10px] font-mono-tech text-white pulse-dot">
-                {alertCount}
-              </span>
-            )}
-          </button>
+          <NotificationBell alertCount={alertCount} />
 
           <button
             onClick={() => { logout(); nav({ to: "/login" }); }}
