@@ -37,10 +37,11 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
           muted 
           loop 
           playsInline
+          crossOrigin="anonymous"
           className="absolute inset-0 w-full h-full object-cover opacity-50"
           style={{ zIndex: 0 }}
         >
-          <source src={videoUrl || streamUrl || "https://cdn.pixabay.com/video/2020/07/30/46114-446449784_large.mp4"} type="video/mp4"/>
+          <source src={videoUrl || streamUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"} type="video/mp4"/>
         </video>
       ) : (
         <div
