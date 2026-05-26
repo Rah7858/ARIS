@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Lock, ShieldAlert, User } from "lucide-react";
-import { isAuthed, login } from "@/lib/auth";
+import { isAuthed } from "@/lib/auth";
 import { toast } from "@/components/aris/Toaster";
+import axios from "axios";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const [user, setUser] = useState("admin");
+  const [user, setUser] = useState("admin@aris.com");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,23 +22,48 @@ function LoginPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
     try {
-      const ok = await login(user, pass);
-      if (ok) {
+      setLoading(true);
+      setError("");
+      
+      const baseUrlResolved = import.meta.env.VITE_API_URL || "https://aris-335h.onrender.com";
+      const authUrl = baseUrlResolved.includes("/api/v1")
+        ? `${baseUrlResolved}/auth/login`
+        : baseUrlResolved.endsWith("/api")
+          ? `${baseUrlResolved}/v1/auth/login`
+          : `${baseUrlResolved}/api/v1/auth/login`;
+
+      const response = await axios.post(
+        authUrl,
+        { email: user.includes("@") ? user : `${user}@aris.com`, password: pass }
+      );
+      
+      const token = response.data?.data?.token || response.data?.token;
+      const userData = response.data?.data?.user || response.data?.user;
+      
+      if (token) {
+        localStorage.setItem('aris_token', token);
+        localStorage.setItem('aris_user', JSON.stringify(userData));
+        localStorage.setItem("aris_is_demo", "false");
         toast("AUTHENTICATED · Access granted", "success");
-        nav({ to: "/dashboard" });
+        nav({ to: '/dashboard' });
       } else {
-        const msg = "Invalid credentials. Use admin / aris2026";
+        throw new Error("No token");
+      }
+    } catch (error) {
+      // Demo mode fallback
+      if (pass === 'aris2026' && (user === 'admin@aris.com' || user === 'admin')) {
+        localStorage.setItem('aris_token', 'demo_token');
+        localStorage.setItem('aris_demo', 'true');
+        localStorage.setItem('aris_is_demo', 'true');
+        toast("DEMO SESSION · Initiated fallback mode", "info");
+        nav({ to: '/dashboard' });
+      } else {
+        const msg = 'Invalid credentials';
         setError(msg);
         toast(msg, "error");
-        setLoading(false);
       }
-    } catch {
-      const msg = "Connection failed — is the backend running?";
-      setError(msg);
-      toast(msg, "error");
+    } finally {
       setLoading(false);
     }
   };
@@ -97,7 +123,7 @@ function LoginPage() {
 
           <div className="mt-5 pt-5 border-t border-border text-[10px] font-mono-tech text-muted-foreground space-y-1">
             <div className="text-cyan/70 mb-1">// DEMO CREDENTIALS</div>
-            <div className="flex justify-between"><span>OPERATOR ID</span><span className="text-foreground">admin</span></div>
+            <div className="flex justify-between"><span>OPERATOR ID</span><span className="text-foreground">admin@aris.com</span></div>
             <div className="flex justify-between"><span>ACCESS KEY</span><span className="text-foreground">aris2026</span></div>
           </div>
         </div>

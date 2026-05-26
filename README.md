@@ -1,42 +1,35 @@
 # ARIS - Accident Response Intelligence System
-
 > Every Second Saves a Life
 
-## Overview
-ARIS is an AI-powered real-time accident 
-detection and emergency response platform 
-that helps authorities respond faster to 
-road accidents across Indian highways.
-
 ## Live Demo
-- Frontend: https://aris.rkdev.online
-- Demo Login: admin / aris2026
+🌐 https://aris.rkdev.online
+📧 Login: admin@aris.com / Admin@1234
 
 ## Tech Stack
-### Frontend
-- React 19 + TypeScript
-- TanStack Router
-- Tailwind CSS
-- Recharts
-- Leaflet Maps
-- WebSocket (real-time)
-
-### Backend  
-- Node.js + Express.js
-- PostgreSQL (Supabase)
-- JWT Authentication
-- WebSocket
-- Nodemailer
+- Frontend: React 19, TypeScript, 
+  TanStack Router, Tailwind CSS, Recharts
+- Backend: Node.js, Express, PostgreSQL
+- Database: Supabase
+- Deployment: Vercel + Render
 
 ## Features
-- Real-time accident detection dashboard
-- AI confidence scoring (75-99%)
-- Live camera surveillance feeds
-- Emergency contact dispatch system
-- Analytics and heatmaps
-- Alert history with retry logic
-- Role-based access control
+✅ Real-time accident detection dashboard
+✅ AI confidence scoring
+✅ Live camera surveillance (6 feeds)
+✅ Emergency dispatch system
+✅ Analytics and heatmaps
+✅ WebSocket real-time updates
+✅ JWT authentication
 
-## Setup
-cd backend && npm install && npm run dev
-cd frontend && npm install && npm run dev
+## Setup Instructions
+# Backend
+cd backend
+cp .env.example .env
+npm install
+npm run seed
+npm run dev
+
+# Frontend  
+cd frontend
+npm install --legacy-peer-deps
+npm run dev

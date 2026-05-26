@@ -161,7 +161,7 @@ function DashboardPage() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             {cameras.slice(0, 6).map((c, i) => (
-              <CameraFeed key={c.id} name={c.name || c.id} city={c.city} location={c.location} online={c.status === "active" || c.status === "ONLINE" || c.status === "online"} streamUrl={c.streamUrl} hue={["#0f1a2a", "#1a0f1a", "#0f1a1a", "#1a1a0f"][i % 4]} />
+              <CameraFeed key={c.id} name={c.name || c.id} city={c.city} location={c.location} online={c.status === "active" || c.status === "ONLINE" || c.status === "online"} streamUrl={c.streamUrl} videoUrl={c.videoUrl} hue={["#0f1a2a", "#1a0f1a", "#0f1a1a", "#1a1a0f"][i % 4]} />
             ))}
           </div>
         </div>

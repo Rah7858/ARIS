@@ -28,8 +28,8 @@ export function AccidentMap({ markers, height = 400, center = [21.5, 78] }: { ma
   }, [markers, center]);
 
   return (
-    <div className="relative w-full rounded-sm border border-border overflow-hidden" style={{ height }}>
-      <div ref={ref} style={{ height }} className="w-full" />
+    <div className="relative rounded-sm border border-border overflow-hidden" style={{ height: '400px', width: '100%' }}>
+      <div ref={ref} style={{ height: '400px', width: '100%' }} />
       <div className="radar-sweep" aria-hidden />
     </div>
   );

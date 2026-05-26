@@ -1,4 +1,10 @@
-const WS_URL = (import.meta.env?.VITE_WS_URL) || "ws://localhost:5000/ws";
+const getWsUrl = () => {
+  const apiUrl = import.meta.env?.VITE_API_URL || "http://localhost:5000";
+  const wsBase = apiUrl.replace(/^http/, "ws");
+  return wsBase.endsWith("/ws") ? wsBase : `${wsBase}/ws`;
+};
+
+const WS_URL = import.meta.env?.VITE_WS_URL || getWsUrl();
 
 type EventHandler = (data: unknown) => void;
 

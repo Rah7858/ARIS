@@ -1,47 +1,38 @@
-import axios from "axios";
+import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL 
+  || 'http://localhost:5000'
 
-// Smart resolve of base API route to handle backend versioning
-const BASE_URL = API_URL.includes("/api/v1") 
-  ? API_URL 
-  : API_URL.endsWith("/api") 
-    ? `${API_URL}/v1` 
-    : `${API_URL}/api/v1`;
+// Dynamically resolve base API route to handle backend versioning
+const BASE_URL = API_URL.includes('/api/v1')
+  ? API_URL
+  : API_URL.endsWith('/api')
+    ? `${API_URL}/v1`
+    : `${API_URL}/api/v1`
 
 export const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
-  headers: { "Content-Type": "application/json" },
-});
+  timeout: 10000
+})
 
-api.interceptors.request.use(
-  (config) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("aris_token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-api.interceptors.use = api.interceptors.request.use; // fallback compatibility
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('aris_token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
 
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     if (error.response?.status === 401) {
-      if (typeof window !== "undefined") {
-        localStorage.clear();
-        window.location.href = "/login";
-      }
+      localStorage.clear()
+      window.location.href = '/login'
     }
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 // ── Convenience helpers to prevent breaking other components ─────────────────
 export const apiGet = <T>(url: string, params?: object) =>
@@ -59,4 +50,4 @@ export const apiPatch = <T>(url: string, body?: object) =>
 export const apiDelete = (url: string) =>
   api.delete<{ success: boolean }>(url).then((r) => r.data);
 
-export default api;
+export default api

@@ -8,9 +8,10 @@ interface Props {
   online?: boolean;
   hue?: string;
   streamUrl?: string;
+  videoUrl?: string;
 }
 
-export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a", streamUrl }: Props) {
+export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a", streamUrl, videoUrl }: Props) {
   const particles = useMemo(() => Array.from({ length: 14 }).map((_, i) => ({
     left: (i * 17) % 100,
     top: (i * 29) % 100,
@@ -39,7 +40,7 @@ export function CameraFeed({ name, city, location, online = true, hue = "#0f1a2a
           className="absolute inset-0 w-full h-full object-cover opacity-50"
           style={{ zIndex: 0 }}
         >
-          <source src={streamUrl || "https://cdn.pixabay.com/video/2020/07/30/46114-446449784_large.mp4"} type="video/mp4"/>
+          <source src={videoUrl || streamUrl || "https://cdn.pixabay.com/video/2020/07/30/46114-446449784_large.mp4"} type="video/mp4"/>
         </video>
       ) : (
         <div
