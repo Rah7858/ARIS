@@ -23,6 +23,9 @@ const pool = new Pool({
   max:                    20,
   idleTimeoutMillis:      30000,
   connectionTimeoutMillis: 5000,
+  // Force IPv4 — Render free tier does not support outbound IPv6
+  // Supabase direct host resolves to IPv6; this prevents ENETUNREACH
+  family:                 4,
 });
 
 pool.on('error', (err) => {
