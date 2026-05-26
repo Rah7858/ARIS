@@ -1,6 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Activity, AlertTriangle, BarChart3, Camera, Cog, LayoutDashboard, LogOut, Menu, Phone, ShieldAlert } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Bell, Camera, Cog, LayoutDashboard, LogOut, Menu, Phone, ShieldAlert } from "lucide-react";
 import { logout } from "@/lib/auth";
 import { AuthGuard } from "./AuthGuard";
 import { NotificationBell } from "./NotificationBell";
